@@ -7,25 +7,29 @@
 
 	export let to: Char;
 
-	let flaps = cycleChars({ to });
-	let toShow: { char: Char; index: number }[] = [];
+	let chars = cycleChars({ to });
+	let toFlip: { char: Char; index: number }[] = [];
+	let showFlipStack = true;
 
 	const interval = cycleTo({
 		to,
 		delay: DURATION / 2 + ms(-50, 50),
-		onTick: (from, to, index) => (toShow = [...toShow, { char: to, index }]),
+		onTick: (from, to, index) => (toFlip = [...toFlip, { char: to, index }]),
+		onDone: () => (showFlipStack = false),
 	});
 
 	onDestroy(() => clearInterval(interval));
 </script>
 
-<Stack>
-	<Stack style="z-index: 1;">
-		{#each toShow as { char, index }}
-			<Flap type="top" {char} flip style="z-index: {flaps.length - index}" />
-			<Flap type="bot" {char} flip style="z-index: {index}" />
-		{/each}
-	</Stack>
-	<Flap style="z-index: 0;" char={!toShow.length ? " " : to} type="top" />
-	<Flap style="z-index: 0;" char={toShow.length < 2 ? " " : to} type="bot" />
+<Stack ariaLabel={to}>
+	{#if toFlip.length && showFlipStack}
+		<Stack style="z-index: 1;">
+			{#each toFlip as { char, index }}
+				<Flap type="top" {char} flip style="z-index: {chars.length - index}" />
+				<Flap type="bot" {char} flip style="z-index: {index}" />
+			{/each}
+		</Stack>
+	{/if}
+	<Flap style="z-index: 0;" char={!toFlip.length ? " " : to} type="top" />
+	<Flap style="z-index: 0;" char={toFlip.length < 1 ? " " : to} type="bot" />
 </Stack>

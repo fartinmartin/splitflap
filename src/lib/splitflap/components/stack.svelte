@@ -2,9 +2,10 @@
 	let className: string | undefined | null = undefined;
 	export { className as class };
 	export let style = "";
+	export let ariaLabel = "";
 </script>
 
-<div class="stack {className ?? ''}" {style}>
+<div class="stack {className ?? ''}" {style} aria-label={ariaLabel}>
 	<slot />
 </div>
 

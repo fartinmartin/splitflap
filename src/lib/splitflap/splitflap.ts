@@ -24,6 +24,7 @@ type CylceOptions = {
 	from?: Char;
 	delay?: number;
 	onTick?: (from: Char, to: Char, index: number) => void;
+	onDone?: () => void;
 };
 
 export const cycleTo = ({
@@ -31,6 +32,7 @@ export const cycleTo = ({
 	to,
 	delay = 500,
 	onTick = () => {},
+	onDone = () => {},
 }: CylceOptions) => {
 	const fromIndex = chars.indexOf(from);
 	const toIndex = chars.indexOf(to);
@@ -43,6 +45,7 @@ export const cycleTo = ({
 		onTick(prev(currentChar), chars[currentIndex], currentIndex);
 
 		if (chars[currentIndex] === to) {
+			onDone();
 			clearInterval(interval);
 		}
 	}, delay);

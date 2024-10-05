@@ -1,4 +1,5 @@
 <script lang="ts">
+	import Performance from "./lib/performance.svelte";
 	import { Splitflap } from "./lib/splitflap";
 
 	const messages = ["hello", "jenny"].map((msg) => msg.toUpperCase());
@@ -25,6 +26,8 @@
 		<input type="text" bind:value={message} />
 	</div>
 </main>
+
+<Performance />
 
 <style>
 	:global(body) {

@@ -1,5 +1,6 @@
 <script lang="ts">
-	// import { onMount } from "svelte";
+	import { onMount } from "svelte";
+
 	import type { AnimationEventHandler } from "svelte/elements";
 	import { DELAY, DURATION, prev, type Char } from "../splitflap";
 
@@ -14,10 +15,10 @@
 		if (target instanceof HTMLDivElement) target.style.display = "none";
 	};
 
-	// onMount(() => {
-	// 	console.log(`[mount] ${type} flap ${char}`);
-	// 	() => console.log(`[unmount] ${type} flap ${char}`);
-	// });
+	onMount(() => {
+		// console.log(`[mount] ${type} flap ${char}`);
+		() => console.log(`[unmount] ${type} flap ${char}`);
+	});
 </script>
 
 <div
@@ -27,6 +28,7 @@
 	style:--duration={Math.round(duration) + "ms"}
 	style:--delay={Math.round(delay) + "ms"}
 	data-char={char}
+	aria-hidden="true"
 >
 	{#if type === "top"}
 		<div class="flap from top" on:animationend={end}>
