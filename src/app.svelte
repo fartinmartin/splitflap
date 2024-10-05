@@ -15,10 +15,14 @@
 </script>
 
 <main>
-	<div class="display">
-		{#each message as char}
-			<Splitflap.Character to={ts_ignore(char)} />
-		{/each}
+	<div class="hero">
+		<div class="display">
+			{#each message as char}
+				<Splitflap.Character to={ts_ignore(char).toUpperCase()} />
+			{/each}
+		</div>
+
+		<input type="text" bind:value={message} />
 	</div>
 </main>
 
@@ -33,6 +37,8 @@
 		font-family: "IBM Plex Mono", monospace;
 		font-weight: 600;
 		font-style: normal;
+
+		overflow: hidden;
 	}
 
 	:global(#app) {
@@ -53,5 +59,34 @@
 		padding: 0.5rem;
 		border: 1px solid hsl(16, 15%, 21%);
 		border-radius: 8px;
+	}
+
+	.hero {
+		display: flex;
+		flex-direction: column;
+		gap: 1rem;
+		overflow: hidden;
+	}
+
+	input {
+		text-transform: uppercase;
+		text-align: center;
+
+		font-family: inherit;
+		font-weight: 500;
+		font-size: 1rem;
+
+		background: hsl(16, 15%, 8%);
+		color: inherit;
+
+		border: 1px solid hsl(16, 15%, 21%);
+		border-radius: 4px;
+		max-width: 40ch;
+		margin: 0 auto;
+	}
+
+	input:focus {
+		outline: none;
+		background: hsl(16, 15%, 16%);
 	}
 </style>
