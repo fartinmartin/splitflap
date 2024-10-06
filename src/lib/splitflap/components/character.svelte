@@ -17,7 +17,7 @@
 		to,
 		delay: DURATION / 2 + ms(-50, 50),
 		onTick: (from, to, index) => (toFlip = [...toFlip, { char: to, index }]),
-		onDone: () => (showFlipStack = false),
+		onDone: () => (showFlipStack = false), // TODO: emit event for Root to know when all chars are done
 	});
 
 	onDestroy(() => clearInterval(interval));

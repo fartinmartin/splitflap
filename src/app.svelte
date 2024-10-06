@@ -1,8 +1,9 @@
 <script lang="ts">
+	import type { FocusEventHandler } from "svelte/elements";
 	import Performance from "./lib/performance.svelte";
 	import { Splitflap } from "./lib/splitflap";
 
-	const messages = ["hello", "jenny"].map((msg) => msg.toUpperCase());
+	let messages = ["hello", "jenny"].map((msg) => msg.toUpperCase());
 	$: message = messages[0];
 
 	setInterval(() => {
@@ -11,12 +12,15 @@
 		if (nextMessage) message = nextMessage;
 		else message = messages[0];
 	}, 5 * 1000);
+
+	const setMessage: FocusEventHandler<HTMLInputElement> = ({ currentTarget }) =>
+		(messages = [currentTarget?.value.toUpperCase(), ...messages]);
 </script>
 
 <main>
 	<div class="hero">
 		<Splitflap.Root {message} />
-		<input type="text" bind:value={message} />
+		<input type="text" on:blur={setMessage} />
 	</div>
 </main>
 

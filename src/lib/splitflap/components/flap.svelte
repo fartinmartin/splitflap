@@ -11,9 +11,8 @@
 	export let type: "bot" | "top" = "top";
 	export let style = "";
 
-	const end: AnimationEventHandler<HTMLDivElement> = ({ target }) => {
-		if (target instanceof HTMLDivElement) target.style.display = "none";
-	};
+	let show = true;
+	const end: AnimationEventHandler<HTMLDivElement> = () => (show = false);
 
 	onMount(() => {
 		// console.log(`[mount] ${type} flap ${char}`);
@@ -21,26 +20,28 @@
 	});
 </script>
 
-<div
-	class="splitflap {type}"
-	class:flip
-	{style}
-	style:--duration={Math.round(duration) + "ms"}
-	style:--delay={Math.round(delay) + "ms"}
-	data-char={char}
-	aria-hidden="true"
->
-	{#if type === "top"}
-		<div class="flap from top" on:animationend={end}>
-			<span>{flip ? prev(char) : char}</span>
-		</div>
-	{:else if type === "bot"}
-		<div class="flap to bottom" on:animationend={end}>
-			<span>{char.toUpperCase()}</span>
-		</div>
-		<div class="flap bottom shadow" on:animationend={end}></div>
-	{/if}
-</div>
+{#if show}
+	<div
+		class="splitflap {type}"
+		class:flip
+		{style}
+		style:--duration={Math.round(duration) + "ms"}
+		style:--delay={Math.round(delay) + "ms"}
+		data-char={char}
+		aria-hidden="true"
+	>
+		{#if type === "top"}
+			<div class="flap from top" on:animationend={end}>
+				<span>{flip ? prev(char) : char.toUpperCase()}</span>
+			</div>
+		{:else if type === "bot"}
+			<div class="flap to bottom" on:animationend={end}>
+				<span>{char.toUpperCase()}</span>
+			</div>
+			<div class="flap bottom shadow" on:animationend={end}></div>
+		{/if}
+	</div>
+{/if}
 
 <style>
 	div {

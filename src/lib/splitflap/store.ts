@@ -1,16 +1,21 @@
 import { get, writable } from "svelte/store";
 
-export const previous = writable<string[]>([]);
+export const history = {
+	set,
+	latest,
+};
 
-export function set(message: string) {
-	const state = get(previous);
+const store = writable<string[]>([]);
+
+function set(message: string) {
+	const state = get(store);
 	if (state.length === 0 || state[state.length - 1] !== message) {
-		previous.set([...state, message]);
+		store.set([...state, message]);
 	}
 }
 
-export function latest(message: string) {
-	const state = get(previous);
+function latest(message: string) {
+	const state = get(store);
 	for (let i = state.length - 1; i >= 0; i--) {
 		if (state[i] !== message) return state[i];
 	}

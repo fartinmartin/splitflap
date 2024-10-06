@@ -1,10 +1,10 @@
 <script lang="ts">
 	import { beforeUpdate } from "svelte";
-	import { latest, set } from "../store";
+	import { history } from "../store";
 	import Character from "./character.svelte";
 
 	export let message: string;
-	beforeUpdate(() => set(message));
+	beforeUpdate(() => history.set(message));
 
 	const ts_ignore = (x: any) => x;
 </script>
@@ -13,7 +13,7 @@
 	{#key message}
 		{#each message as char, index}
 			<Character
-				from={ts_ignore(latest(message)?.[index]) ?? " "}
+				from={ts_ignore(history.latest(message)?.[index]) ?? " "}
 				to={ts_ignore(char).toUpperCase()}
 			/>
 		{/each}
