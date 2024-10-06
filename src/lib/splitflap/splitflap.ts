@@ -1,6 +1,7 @@
 export const DELAY = 0;
 export const DURATION = 500;
 
+export type Char = (typeof chars)[number];
 // prettier-ignore
 export const chars = [
   ' ', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I',
@@ -8,8 +9,6 @@ export const chars = [
   'T', 'U', 'V', 'W', 'X', 'Y', 'Z', '0', '1', '2',
   '3', '4', '5', '6', '7', '8', '9', '.', ',', "'",
 ] as const;
-
-export type Char = (typeof chars)[number];
 
 export const get = (c: Char, i: number) => {
 	const index = chars.indexOf(c);
@@ -74,41 +73,4 @@ export const cycleChars = ({
 
 export const ms = (min = 0, max = 100) => {
 	return Math.random() * (max - min) + min;
-};
-
-type Key = {
-	id: string;
-	char: string;
-	mount: number;
-	unmount: number;
-};
-
-type KeyOptions = {
-	chars: Key[];
-	duration: number;
-};
-
-export const getKeys = ({ chars, duration = 500 }: KeyOptions) => {
-	let totalDur = 0;
-
-	const keys = chars.map((char) => {
-		const dur = Math.round(duration + ms(-50, 50));
-
-		const mount = totalDur;
-		const unmount = mount + dur;
-		totalDur = unmount;
-
-		return { id: crypto.randomUUID(), char, duration: dur, mount, unmount };
-	});
-
-	return keys.map((key, index) => {
-		const prevKey = index > 0 ? keys[index - 1] : null;
-		const offset = prevKey ? prevKey.duration : 0;
-
-		return {
-			...key,
-			mount: key.mount - offset,
-			delay: Math.round(offset / 2),
-		};
-	});
 };

@@ -5,13 +5,15 @@
 	import Stack from "./stack.svelte";
 	import Flap from "./flap.svelte";
 
+	export let from: Char | undefined = undefined;
 	export let to: Char;
 
-	let chars = cycleChars({ to });
+	let chars = cycleChars({ from, to });
 	let toFlip: { char: Char; index: number }[] = [];
 	let showFlipStack = true;
 
 	const interval = cycleTo({
+		from,
 		to,
 		delay: DURATION / 2 + ms(-50, 50),
 		onTick: (from, to, index) => (toFlip = [...toFlip, { char: to, index }]),
@@ -19,6 +21,9 @@
 	});
 
 	onDestroy(() => clearInterval(interval));
+
+	$: staticTop = !toFlip.length ? (from ?? " ") : to;
+	$: staticBot = toFlip.length < 1 ? (from ?? " ") : to;
 </script>
 
 <Stack ariaLabel={to}>
@@ -30,6 +35,6 @@
 			{/each}
 		</Stack>
 	{/if}
-	<Flap style="z-index: 0;" char={!toFlip.length ? " " : to} type="top" />
-	<Flap style="z-index: 0;" char={toFlip.length < 1 ? " " : to} type="bot" />
+	<Flap style="z-index: 0;" char={staticTop} type="top" />
+	<Flap style="z-index: 0;" char={staticBot} type="bot" />
 </Stack>

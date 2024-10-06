@@ -3,26 +3,19 @@
 	import { Splitflap } from "./lib/splitflap";
 
 	const messages = ["hello", "jenny"].map((msg) => msg.toUpperCase());
-	let message = messages[0];
+	$: message = messages[0];
 
-	// setInterval(() => {
-	// 	const currentIndex = message.indexOf(message);
-	// 	const nextMessage = messages[currentIndex + 1];
-	// 	if (nextMessage) message = nextMessage;
-	// 	else message = messages[0];
-	// }, 4 * 1000);
-
-	const ts_ignore = (x: any) => x;
+	setInterval(() => {
+		const currentIndex = message.indexOf(message);
+		const nextMessage = messages[currentIndex + 1];
+		if (nextMessage) message = nextMessage;
+		else message = messages[0];
+	}, 5 * 1000);
 </script>
 
 <main>
 	<div class="hero">
-		<div class="display">
-			{#each message as char}
-				<Splitflap.Character to={ts_ignore(char).toUpperCase()} />
-			{/each}
-		</div>
-
+		<Splitflap.Root {message} />
 		<input type="text" bind:value={message} />
 	</div>
 </main>
@@ -53,15 +46,6 @@
 		place-items: center;
 		gap: 1rem;
 		min-height: 100dvh;
-	}
-
-	.display {
-		display: flex;
-		gap: 0.25rem;
-		background: hsl(16, 15%, 8%);
-		padding: 0.5rem;
-		border: 1px solid hsl(16, 15%, 21%);
-		border-radius: 8px;
 	}
 
 	.hero {
